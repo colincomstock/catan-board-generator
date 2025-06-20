@@ -3,12 +3,14 @@ export default function generateBoard(): void {
     type PortType = 'ore' | 'brick' | 'wheat' | 'wood' | 'sheep' | 'any';
     type TokenNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
     type AxialCoord = [number, number];
+    type TileId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18;
 
     interface Tile {
         coords: AxialCoord;
         resource: ResourceType;
         numberToken: TokenNumber | null;
         hasRobber: boolean;
+        tileID: TileId;
     }
 
     interface Port {
@@ -33,6 +35,35 @@ export default function generateBoard(): void {
         console.log(`Random Coords = [${xCoord}, ${yCoord}]`)
     }
 
+
+
+    // Modified Fisher-Yates shuffle algorithm to accept seeds.
+    function shuffle(array: number[], seed: number) {
+        let m = array.length, t, i;
+
+        // While there remains elements to shuffle
+        while (m) {
+
+            // Pick a remaining element
+            i = Math.floor(random(seed) * m--);
+
+            // And swap it with the current element.
+            t = array[m];
+            array[m] = array [i];
+            array[i] = t;
+            ++seed;
+        }
+
+        return array;
+    }
+
+    let sampleArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+    function random(seed: number) {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
     // Offsets for finding coordinates of neighboring hexes of a given hex
     // ex: [1, 1] => [0, 1], [1, 2], [2, 2], [2, 1], [1, 0], [0, 0]
     const neighborOffsets: AxialCoord[] = [
@@ -52,4 +83,8 @@ export default function generateBoard(): void {
     generateTile();
 
     console.log(newPort);
+
+
+    shuffle(sampleArray, 2345695);
+    console.log(sampleArray)
 }
